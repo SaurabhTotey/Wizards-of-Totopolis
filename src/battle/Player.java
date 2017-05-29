@@ -1,3 +1,7 @@
+package battle;
+
+import battle.Character;
+
 import java.io.Serializable;
 
 /**
