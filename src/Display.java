@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created by Saurabh Totey on 5/28/2017.
@@ -60,9 +61,9 @@ public class Display {
             console = new JTextArea();
             console.setFont(defaultFont);
             console.setEditable(false);
-            mainPane.add(console, "grow, push, span, wrap");
+            mainPane.add(new JScrollPane(console), "grow, push, span, wrap");
 
-            window.add(new JScrollPane(mainPane), "grow, push, span, wrap, gap 5% 5% 5% 5%");
+            window.add(mainPane, "grow, push, span, wrap, gap 5% 5% 5% 5%");
 
             new Thread(() -> {while(true){try{refreshFrame();Thread.sleep(300);}catch(InterruptedException e){}}}).start();
         });

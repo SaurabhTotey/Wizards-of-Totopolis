@@ -1,12 +1,13 @@
 package battle.spells;
 
-import battle.Action;
 import battle.Character;
 
 /**
  * Created by Saurabh Totey on 5/28/2017.
  */
 public class Defend extends Spell {
+
+    {new Defend();}
 
     public Defend(){
         super("defend");

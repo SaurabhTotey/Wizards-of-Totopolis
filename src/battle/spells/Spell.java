@@ -1,6 +1,5 @@
 package battle.spells;
 
-import battle.Action;
 import java.util.HashMap;
 import battle.Character;
 

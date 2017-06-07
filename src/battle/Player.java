@@ -18,4 +18,9 @@ public class Player extends Character implements Serializable {
         //TODO
     }
 
+    public String selectSpell(){
+        //TODO
+        return null;
+    }
+
 }
