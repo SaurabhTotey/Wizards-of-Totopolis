@@ -1,4 +1,4 @@
-package battle.spells;
+package battle;
 
 /**
  * Created by Saurabh Totey on 5/28/2017.

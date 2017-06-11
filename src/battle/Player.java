@@ -1,6 +1,6 @@
 package battle;
 
-import battle.Character;
+import battle.spells.Spell;
 
 import java.io.Serializable;
 
@@ -15,12 +15,17 @@ public class Player extends Character implements Serializable {
 
     public void addExperience(int experienceToAdd){
         super.addExperience(experienceToAdd);
-        //TODO
+        //TODO add stats gambling
     }
 
-    public String selectSpell(){
-        //TODO
-        return null;
+    public Spell selectSpell(Battle currentBattle){
+        //TODO return not randomly selected spell
+        return super.selectSpell(currentBattle);
+    }
+
+    public Character decideTarget(Battle currentBattle, boolean canDecideSelf){
+        //TODO return not randomly decided target
+        return super.decideTarget(currentBattle, canDecideSelf);
     }
 
 }

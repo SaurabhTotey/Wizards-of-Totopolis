@@ -1,5 +1,7 @@
 package battle;
 
+import battle.spells.Spell;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -37,15 +39,26 @@ public class Character implements Serializable, Comparable<Character>{
         this.refresh();
     }
 
+    public boolean isDead(){
+        return this.health[0] <= 0;
+    }
+
     public void refresh(){
         for(int[] stat : this.allStats){
             stat[1] = stat[0];
         }
     }
 
-    public String selectSpell(){
-        //TODO add implementation of selecting a spell
-        return null;
+    public Spell selectSpell(Battle currentBattle){
+        return Spell.spellNameToSpell.get(this.currentSpells[(int) (Math.random() * this.currentSpells.length)]);
+    }
+
+    public Character decideTarget(Battle currentBattle, boolean canDecideSelf){
+        Character decided = null;
+        do{
+            decided = currentBattle.contestants.get((int) (Math.random() * currentBattle.contestants.size()));
+        }while(!canDecideSelf && decided == this);
+        return decided;
     }
 
     public int compareTo(Character other){

@@ -1,3 +1,4 @@
+import battle.Battle;
 import battle.Character;
 import battle.Player;
 
@@ -18,6 +19,7 @@ public class Main implements Serializable {
 
     public String identifier;
     public Character player;
+    public Battle currentBattle;
 
     public Main(String id){
         this.identifier = id;
@@ -36,8 +38,8 @@ public class Main implements Serializable {
     }
 
     public static String getInput(boolean allowEmptyInput){
-        willInterpretIncoming = true;
-        while(input == null || (!allowEmptyInput && input.isEmpty())){
+        willInterpretIncoming = false;
+        while(input == null || input.isEmpty() && !allowEmptyInput){
             try{
                 Thread.sleep(300);
             }catch(InterruptedException e){
@@ -46,7 +48,7 @@ public class Main implements Serializable {
         }
         String toReturn = input;
         input = null;
-        willInterpretIncoming = false;
+        willInterpretIncoming = true;
         return toReturn;
     }
 

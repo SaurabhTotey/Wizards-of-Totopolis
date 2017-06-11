@@ -1,6 +1,8 @@
 package battle.spells;
 
 import java.util.HashMap;
+
+import battle.Battle;
 import battle.Character;
 
 /**
@@ -8,12 +10,19 @@ import battle.Character;
  */
 public abstract class Spell {
 
-    public static HashMap<String, Spell> spellNameToSpell = new HashMap<String, Spell>();
-
-    public Spell(String name){
-        spellNameToSpell.put(name, this);
+    public enum Target{
+        SELF, ANYONE, ANYONE_BUT_SELF, EVERYONE, EVERYONE_BUT_SELF
     }
 
-    public abstract Action[] castSpell(Character caster, Character defender);
+    public static HashMap<String, Spell> spellNameToSpell = new HashMap<String, Spell>();
+
+    public Target[] targets;
+
+    public Spell(String name, Target[] targets){
+        spellNameToSpell.put(name, this);
+        this.targets = targets;
+    }
+
+    public abstract Action[] castSpell(Battle currentBattle, Character[] affecting);
 
 }

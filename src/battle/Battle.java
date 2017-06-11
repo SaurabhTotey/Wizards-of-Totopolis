@@ -22,11 +22,11 @@ public class Battle {
     public void step(){
         //Executes all of the actions in the battle
         for(Action toDo : this.battleProcedure){
-            if(toDo.timeUntilUse == 0){
+            if(toDo.timeUntilUse == 0 && toDo.isValid()){
                 toDo.doAction();
             }
             toDo.timeUntilUse--;
-            if(toDo.timeUntilUse < 0){
+            if(toDo.timeUntilUse == -1){
                 this.battleProcedure.remove(toDo);
             }
         }
@@ -38,10 +38,38 @@ public class Battle {
                 Collections.swap(this.contestants, i, i + 1);
             }
         }
-        //Goes through all of the players and gets their spells
+        //Goes through all of the players and gets their spells and adds their consequences to the battle
         for(Character contestant : this.contestants){
-            //TODO select defender for each of the spells casted
-            this.battleProcedure.addAll(Arrays.asList(Spell.spellNameToSpell.get(contestant.selectSpell()).castSpell(contestant, null)));
+            if(!contestant.isDead()){
+                Spell selectedSpell = contestant.selectSpell(this);
+                ArrayList<Character> targets = new ArrayList<Character>();
+                for(Spell.Target needed : selectedSpell.targets){
+                    switch(needed){
+                        case SELF:
+                            targets.add(contestant);
+                            break;
+                        case ANYONE:
+                            targets.add(contestant.decideTarget(this, true));
+                            break;
+                        case EVERYONE:
+                            targets.addAll(this.contestants);
+                            break;
+                        case ANYONE_BUT_SELF:
+                            targets.add(contestant.decideTarget(this, false));
+                            break;
+                        case EVERYONE_BUT_SELF:
+                            targets.addAll(this.contestants);
+                            targets.remove(contestant);
+                            break;
+                    }
+                }
+                Character[] selectedTargets = new Character[1 + targets.size()];
+                selectedTargets[0] = contestant;
+                for(int i = 0; i < targets.size(); i++){
+                    selectedTargets[i + 1] = targets.get(i);
+                }
+                this.battleProcedure.addAll(Arrays.asList(selectedSpell.castSpell(this, selectedTargets)));
+            }
         }
     }
 
