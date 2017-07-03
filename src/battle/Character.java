@@ -16,7 +16,7 @@ public class Character implements Serializable, Comparable<Character>{
     public int[] attack = {5, 5};
     public int[] defense = {5, 5};
     public int[] speed = {5, 5};
-    private int[][] allStats = {health, attack, defense, speed};
+    public int[][] allStats = {health, attack, defense, speed};
     public ArrayList<String> availableSpells = new ArrayList<String>();
     public String[] currentSpells = new String[10];
 
@@ -49,12 +49,16 @@ public class Character implements Serializable, Comparable<Character>{
         }
     }
 
+    public void takeDamage(int damageToDeal, boolean allowNegativeDamageToHeal){
+        this.health[0] -= (allowNegativeDamageToHeal && damageToDeal < 0)? damageToDeal : 0;
+    }
+
     public Spell selectSpell(Battle currentBattle){
         return Spell.spellNameToSpell.get(this.currentSpells[(int) (Math.random() * this.currentSpells.length)]);
     }
 
     public Character decideTarget(Battle currentBattle, boolean canDecideSelf){
-        Character decided = null;
+    Character decided;
         do{
             decided = currentBattle.contestants.get((int) (Math.random() * currentBattle.contestants.size()));
         }while(!canDecideSelf && decided == this);

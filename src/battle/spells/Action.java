@@ -7,18 +7,20 @@ import battle.Character;
  */
 public abstract class Action {
 
+    public String actionName;
     public int timeUntilUse;
     public Character[] essentialCharacters;
 
-    public Action(int timeUntilUse, Character[] essentialCharacters){
+    public Action(int timeUntilUse, Character[] cancelIfDie, String actionName){
         this.timeUntilUse = timeUntilUse;
-        this.essentialCharacters = essentialCharacters;
+        this.essentialCharacters = cancelIfDie;
+        this.actionName = actionName;
     }
 
     public boolean isValid(){
         if(this.essentialCharacters != null){
             for(Character character : this.essentialCharacters){
-                if(character.health[0] <= 0){
+                if(character.isDead()){
                     return false;
                 }
             }

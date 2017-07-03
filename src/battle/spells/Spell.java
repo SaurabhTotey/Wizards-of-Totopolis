@@ -10,19 +10,21 @@ import battle.Character;
  */
 public abstract class Spell {
 
-    public enum Target{
-        SELF, ANYONE, ANYONE_BUT_SELF, EVERYONE, EVERYONE_BUT_SELF
-    }
-
     public static HashMap<String, Spell> spellNameToSpell = new HashMap<String, Spell>();
 
-    public Target[] targets;
+    public int cost;
+    public String description;
 
-    public Spell(String name, Target[] targets){
+    public Spell(String name, String description){
         spellNameToSpell.put(name, this);
-        this.targets = targets;
+        this.description = description;
     }
 
-    public abstract Action[] castSpell(Battle currentBattle, Character[] affecting);
+    public Spell(String name, String description, int cost){
+        this(name, description);
+        this.cost = cost;
+    }
+
+    public abstract Action[] castSpell(Battle currentBattle, Character caster);
 
 }

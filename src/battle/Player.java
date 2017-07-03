@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class Player extends Character implements Serializable {
 
+    int money;
+
     public Player(String name){
         this.name = name;
     }
