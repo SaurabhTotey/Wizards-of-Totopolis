@@ -1,12 +1,14 @@
 package display;
 
-import battle.Character;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 /**
  * Created by Saurabh Totey on 5/28/2017.
@@ -28,6 +30,9 @@ public class Display {
     private JTextField defense = new JTextField("???");
     private JTextField speed = new JTextField("???");
     private JTextField[] allFields = new JTextField[]{name, health, attack, defense, speed};
+
+    private ArrayList<String> previouslyEnterredText = new ArrayList<String>();
+    private int locationWithinPreviouslyEnterredText = 0;
 
     public Display(){
         SwingUtilities.invokeLater(() -> {
@@ -63,17 +68,43 @@ public class Display {
             inputField.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                     main.Main.interpretText(inputField.getText());
+                    previouslyEnterredText.add(inputField.getText());
+                    locationWithinPreviouslyEnterredText = previouslyEnterredText.size();
                     inputField.setText("");
                 }
+            });
+            inputField.addKeyListener(new KeyListener(){
+                public void keyPressed(KeyEvent e){
+                    if(e.getKeyCode() == KeyEvent.VK_DOWN && locationWithinPreviouslyEnterredText < previouslyEnterredText.size() - 1) {
+                        inputField.setText(previouslyEnterredText.get(locationWithinPreviouslyEnterredText + 1));
+                        locationWithinPreviouslyEnterredText++;
+                    }else if(e.getKeyCode() == KeyEvent.VK_UP && locationWithinPreviouslyEnterredText > 0){
+                        inputField.setText(previouslyEnterredText.get(locationWithinPreviouslyEnterredText - 1));
+                        locationWithinPreviouslyEnterredText--;
+                    }else if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_UP){
+                        inputField.setText("");
+                        locationWithinPreviouslyEnterredText = (e.getKeyCode() == KeyEvent.VK_DOWN)? previouslyEnterredText.size() : -1;
+                    }
+                }
+                public void keyReleased(KeyEvent e){}
+                public void keyTyped(KeyEvent e){}
             });
             mainPane.add(inputField, "dock south, width 100%, span, wrap");
 
             console = new JTextArea();
             console.setFont(defaultFont);
             console.setEditable(false);
+            console.setLineWrap(true);
+            console.setWrapStyleWord(true);
             mainPane.add(new JScrollPane(console), "grow, push, span, wrap");
 
             JPanel playerPanel = new JPanel(new MigLayout("fillx"));
+
+            JLabel playerPanelTitle = new JLabel("Player Stats");
+            playerPanelTitle.setFont(titleFont);
+            playerPanelTitle.setHorizontalAlignment(SwingConstants.CENTER);
+            playerPanel.add(playerPanelTitle, "grow, span, wrap");
+            playerPanel.add(new JLabel(" "), "span, wrap");
 
             for(JTextField field : this.allFields){
                 field.setFont(defaultFont);
@@ -115,6 +146,8 @@ public class Display {
             window.add(mainPane, "grow, push, span, gap 1% 1% 1% 1%");
 
             new Thread(() -> {while(true){try{refreshFrame();Thread.sleep(300);}catch(InterruptedException e){}}}).start();
+
+            inputField.requestFocus();
         });
     }
 
