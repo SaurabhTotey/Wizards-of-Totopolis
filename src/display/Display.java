@@ -1,13 +1,12 @@
 package display;
 
+import battle.Character;
+import battle.Player;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 /**
@@ -23,9 +22,10 @@ public class Display {
     public JTextArea console;
     public JTextField inputField;
 
+    public Character player;
     private JTextField name = new JTextField("???");
     private JProgressBar experience = new JProgressBar();
-    private JTextField health = new JTextField("???");
+    private JTextField health = new JTextField("???"); //TODO make health a JProgressBar
     private JTextField attack = new JTextField("???");
     private JTextField defense = new JTextField("???");
     private JTextField speed = new JTextField("???");
@@ -37,6 +37,11 @@ public class Display {
     public Display(){
         SwingUtilities.invokeLater(() -> {
             window = new JFrame("Wizards of Totopolis!");
+            window.addWindowListener(new WindowAdapter(){
+                public void windowClosing(WindowEvent e){
+                    System.exit(0);
+                }
+            });
             window.setLayout(new MigLayout("fill"));
             window.setVisible(true);
             window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -154,9 +159,9 @@ public class Display {
     private void refreshFrame(){
         SwingUtilities.invokeLater(() ->{
             try{
-                this.name.setText(main.Main.main.player.name);
+                this.name.setText(player.name);
                 for(int i = 0; i < this.allFields.length - 1; i++){
-                    this.allFields[i + 1].setText(main.Main.main.player.allStats[i][0] + " / " + main.Main.main.player.allStats[i][1]);
+                    this.allFields[i + 1].setText(player.allStats[i][0] + " / " + player.allStats[i][1]);
                 }
             }catch(Exception e){}
             window.repaint();

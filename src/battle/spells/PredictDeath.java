@@ -26,14 +26,25 @@ public class PredictDeath extends Spell {
         }
         if(Math.random() < failChance){
             return new Action[]{new Action(1, null, "predict death - false"){
-                public void doAction(){}
+                public void doAction(){
+                    timeUntilUse--; //Makes it so this action isn't removed from the battle after being used
+                }
+                public String getActionDescription(){
+                    return caster.name + " tried predicting their death, but the spell failed!";
+                }
             }};
         }
         return new Action[]{new Action(1, null, "predict death - true"){
+            boolean didPredictionWork;
             public void doAction(){
-                if(target.isDead()){
-                    target.health[0] = target.health[1];
+                didPredictionWork = target.isDead();
+                if(didPredictionWork){
+                    target.health[0] = target.health[1] / 10;
                 }
+                timeUntilUse--; //Makes it so the action doesn't get removed after being used; it won't trigger again, but it will be findable to see how many times this spell was used
+            }
+            public String getActionDescription(){
+                return caster.name + ((didPredictionWork)? " successfully predicted their death and avoided it!" : " tried predicting their death, but they didn't die!");
             }
         }};
     }

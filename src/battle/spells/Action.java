@@ -29,5 +29,6 @@ public abstract class Action {
     }
 
     public abstract void doAction();
+    public abstract String getActionDescription();
 
 }

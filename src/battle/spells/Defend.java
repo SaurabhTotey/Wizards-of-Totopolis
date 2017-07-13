@@ -20,10 +20,16 @@ public class Defend extends Spell {
                     public void doAction(){
                         caster.defense[0] = caster.defense[0] * 2;
                     }
+                    public String getActionDescription(){
+                        return caster.name + " has used doubled their defense!";
+                    }
                 },
                 new Action(2, new Character[]{caster}, "defend finish"){
                     public void doAction(){
                         caster.defense[0] = caster.defense[0] / 2;
+                    }
+                    public String getActionDescription(){
+                        return caster.name + "'s defense doubling has run out!";
                     }
                 }
         };

@@ -2,6 +2,7 @@ package battle;
 
 import battle.spells.Action;
 import battle.spells.Spell;
+import main.Main;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +29,7 @@ public class Battle {
         for(Action toDo : this.battleProcedure){
             if(toDo.timeUntilUse == 0 && toDo.isValid()){
                 toDo.doAction();
+                Main.output(toDo.getActionDescription());
             }
             toDo.timeUntilUse--;
             if(toDo.timeUntilUse == -1){

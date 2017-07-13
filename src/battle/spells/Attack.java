@@ -15,10 +15,15 @@ public class Attack extends Spell {
     }
 
     public Action[] castSpell(Battle currentBattle, Character caster){
-        Character target = caster.decideTarget(currentBattle, false);
+        Character target = caster.decideTarget(currentBattle, true);
         return new Action[]{new Action(0, new Character[]{caster , target}, "attack"){
+            int damage;
             public void doAction(){
-                target.takeDamage(caster.attack[0] + ((int) Math.sqrt(target.defense[0])), false);
+                damage = caster.attack[0] + ((int) Math.sqrt(target.defense[0]));
+                target.takeDamage(damage, false);
+            }
+            public String getActionDescription(){
+                return caster.name + " attacked " + target.name + " for " + damage + " damage!";
             }
         }};
     }

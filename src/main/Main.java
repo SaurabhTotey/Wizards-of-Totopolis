@@ -31,6 +31,7 @@ public class Main implements Serializable {
         }
         output("So you want to enter wizardry? What's your name?");
         this.player = new Player(getInput(false));
+        gui.player = this.player;
         output("Oh no! It looks like a new challenger approaches for battle!");
         getInput(true);
     }
